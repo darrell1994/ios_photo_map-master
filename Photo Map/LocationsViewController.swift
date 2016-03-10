@@ -8,15 +8,19 @@
 
 import UIKit
 
+protocol LocationsViewControllerDelegate : class {
+    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber)
+}
+
 class LocationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
-    // TODO: Fill in actual CLIENT_ID and CLIENT_SECRET
     let CLIENT_ID = "QA1L0Z0ZNA2QVEEDHFPQWK0I5F1DE3GPLSNW4BZEBGJXUCFL"
     let CLIENT_SECRET = "W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH21ZCPUMCU"
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
 
+    weak var delegate : LocationsViewControllerDelegate!
     var results: NSArray = []
     
     override func viewDidLoad() {
@@ -73,7 +77,7 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
                 if let data = dataOrNil {
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
                         data, options:[]) as? NSDictionary {
-                            NSLog("response: \(responseDictionary)")
+//                            NSLog("response: \(responseDictionary)")
                             self.results = responseDictionary.valueForKeyPath("response.venues") as! NSArray
                             self.tableView.reloadData()
 
@@ -82,25 +86,15 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         });
         task.resume()
     }
-
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        let cell = sender as! UITableViewCell
-        let indexPath = tableView.indexPathForCell(cell)!
-        
-        // This is the selected venue
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let venue = results[indexPath.row] as! NSDictionary
         
         let lat = venue.valueForKeyPath("location.lat") as! NSNumber
         let lng = venue.valueForKeyPath("location.lng") as! NSNumber
         
-        let latString = "\(lat)"
-        let lngString = "\(lng)"
+        delegate.locationsPickedLocation(self, latitude: lat, longitude: lng)
         
-        print(latString + " " + lngString)
+        self.navigationController?.popViewControllerAnimated(true)
     }
 }

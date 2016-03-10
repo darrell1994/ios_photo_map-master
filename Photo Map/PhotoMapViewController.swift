@@ -9,12 +9,14 @@
 import UIKit
 import MapKit
 
-class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,  LocationsViewControllerDelegate, MKMapViewDelegate{
     @IBOutlet weak var cameraContainerView: UIView!
     @IBOutlet weak var mapView: MKMapView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mapView.delegate = self
 
         cameraContainerView.clipsToBounds = true
         cameraContainerView.layer.cornerRadius = cameraContainerView.frame.height/2
@@ -29,7 +31,6 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     }
 
     func onTappingCamera(gesture: UITapGestureRecognizer) {
-        print("Camera tapped")
 //        let cameraView = gesture.view!
 //        let frame = view.frame
 //        
@@ -62,5 +63,35 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
             selectedImage = editedImage
             dismissViewControllerAnimated(true, completion: nil)
             self.performSegueWithIdentifier("tagSegue", sender: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "tagSegue" {
+            let vc = segue.destinationViewController as! LocationsViewController
+            vc.delegate = self
+        }
+    }
+    
+    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
+        annotation.title = "Picture!"
+        mapView.addAnnotation(annotation)
+    }
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        let reuseID = "myAnnotationView"
+        
+        var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseID)
+        if (annotationView == nil) {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            annotationView!.canShowCallout = true
+            annotationView!.leftCalloutAccessoryView = UIImageView(frame: CGRect(x:0, y:0, width: 50, height:50))
+        }
+        
+        let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
+        imageView.image = selectedImage
+        
+        return annotationView
     }
 }
