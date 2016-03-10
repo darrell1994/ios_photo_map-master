@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="jTD-rF-wIY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="jTD-rF-wIY">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -17,10 +17,42 @@
                     <view key="view" contentMode="scaleToFill" id="Lxe-6f-KEH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="heZ-sV-zYA">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                            </mapView>
+                            <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GhQ-Kv-18v">
+                                <rect key="frame" x="120" y="468" width="80" height="80"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera" translatesAutoresizingMaskIntoConstraints="NO" id="POO-CE-sIq">
+                                        <rect key="frame" x="15" y="15" width="50" height="50"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="POO-CE-sIq" firstAttribute="top" secondItem="GhQ-Kv-18v" secondAttribute="top" constant="15" id="KXC-VJ-wZn"/>
+                                    <constraint firstAttribute="trailing" secondItem="POO-CE-sIq" secondAttribute="trailing" constant="15" id="POr-9Q-cFw"/>
+                                    <constraint firstAttribute="width" constant="80" id="g4C-0b-PQM"/>
+                                    <constraint firstAttribute="bottom" secondItem="POO-CE-sIq" secondAttribute="bottom" constant="15" id="hUq-uV-dUP"/>
+                                    <constraint firstItem="POO-CE-sIq" firstAttribute="leading" secondItem="GhQ-Kv-18v" secondAttribute="leading" constant="15" id="lZE-PF-PhA"/>
+                                    <constraint firstAttribute="height" constant="80" id="yMC-8B-WUS"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="GhQ-Kv-18v" firstAttribute="centerX" secondItem="Lxe-6f-KEH" secondAttribute="centerX" id="1GS-WJ-4Sm"/>
+                            <constraint firstItem="ufw-e1-uLx" firstAttribute="top" secondItem="heZ-sV-zYA" secondAttribute="bottom" id="R0r-yD-5NL"/>
+                            <constraint firstItem="heZ-sV-zYA" firstAttribute="top" secondItem="vrG-Wc-0bn" secondAttribute="bottom" id="TCP-3S-B8s"/>
+                            <constraint firstItem="heZ-sV-zYA" firstAttribute="leading" secondItem="Lxe-6f-KEH" secondAttribute="leading" id="rOX-rx-280"/>
+                            <constraint firstItem="ufw-e1-uLx" firstAttribute="top" secondItem="GhQ-Kv-18v" secondAttribute="bottom" constant="20" id="w9U-nx-O1c"/>
+                            <constraint firstAttribute="trailing" secondItem="heZ-sV-zYA" secondAttribute="trailing" id="wqg-y5-zMb"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="aPF-0T-Ydb"/>
                     <connections>
+                        <outlet property="cameraContainerView" destination="GhQ-Kv-18v" id="URh-27-YKZ"/>
+                        <outlet property="mapView" destination="heZ-sV-zYA" id="QCo-Al-3Tn"/>
                         <segue destination="eZf-Nb-6PU" kind="push" identifier="tagSegue" id="Tzv-N2-17x"/>
                         <segue destination="WeT-38-qba" kind="push" identifier="fullImageSegue" id="B5X-dM-HfZ"/>
                     </connections>
@@ -73,7 +105,7 @@
                                         <rect key="frame" x="0.0" y="130" width="320" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8nY-cI-ARj" id="kg8-aL-hL3">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="61"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="60.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rf7-oN-H0f">
@@ -154,4 +186,7 @@
             <point key="canvasLocation" x="109" y="-3"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="camera" width="64" height="64"/>
+    </resources>
 </document>
